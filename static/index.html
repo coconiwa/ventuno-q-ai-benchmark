@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>VENTUNO Q — CPU / NPU Benchmark</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-lockup">
+        <span class="brand-signal" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div><p>VENTUNO Q</p><h1>CPU / NPU BENCHMARK</h1></div>
+      </div>
+      <div class="header-tools">
+        <div class="device-block"><span>PLATFORM</span><strong>Qualcomm Dragonwing™ IQ8</strong><small>QCS8275 · 40 TOPS · 16 GB</small></div>
+        <div class="live" role="status"><i></i><span>LOCAL SYSTEM READY</span></div>
+        <div class="language-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="ja" aria-pressed="false">JP</button>
+          <button type="button" data-lang="en" class="active" aria-pressed="true">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="context-bar" aria-label="Benchmark context">
+      <div><span class="context-label">LIVE VLM INFERENCE</span><p class="lead" data-i18n="lead">同じVLMと画像を用いた、CPUとHexagon NPU向け実用構成の比較</p></div>
+      <div class="context-tags" aria-label="Execution properties"><span>LOCAL</span><span>OFFLINE</span><span>SEQUENTIAL A/B</span></div>
+    </section>
+
+    <main class="dashboard">
+      <section class="input-panel panel">
+        <div class="panel-head">
+          <div><span class="section-index">01</span><strong>INPUT SOURCE</strong></div>
+          <span id="sourceLabel" class="source-state">LIVE CAMERA</span>
+        </div>
+        <label class="model-picker"><span data-i18n="model">使用モデル</span><select id="modelSelect" aria-label="Model"><option value="2b">Qwen3-VL 2B · GGUF Q4_0</option></select></label>
+        <section class="run-mode" aria-label="実行モード" data-i18n-aria="runMode">
+          <div class="mode-row">
+            <span class="mode-label">RUN MODE</span>
+            <div class="mode-switch" role="group" aria-label="実行モードを選択" data-i18n-aria="runMode">
+              <button id="manualMode" class="active" type="button" aria-pressed="true" data-i18n="manual">手動</button>
+              <button id="autoMode" type="button" aria-pressed="false" data-i18n="auto">オート</button>
+            </div>
+          </div>
+          <div id="autoControls" class="auto-controls" hidden>
+            <label><span data-i18n="interval">撮影間隔</span><select id="intervalSelect"><option value="10">10秒</option><option value="20" selected>20秒</option><option value="30">30秒</option><option value="60">60秒</option></select></label>
+            <strong id="autoStatus" data-i18n="gettingReady">開始準備中</strong>
+            <button id="pauseAuto" class="ghost" type="button" data-i18n="pause">一時停止</button>
+          </div>
+        </section>
+        <div class="viewer">
+          <img id="preview" alt="benchmark input">
+          <div id="empty" class="empty"><span data-i18n="cameraWaiting">USBカメラ待機中</span><small data-i18n="uploadHint">画像を選んでも実行できます</small></div>
+          <div id="scan" class="scan"></div>
+          <span class="viewfinder top-left" aria-hidden="true"></span><span class="viewfinder bottom-right" aria-hidden="true"></span>
+        </div>
+        <div class="controls">
+          <button id="runButton" class="primary" data-i18n="run">撮影して比較</button>
+          <label class="file-button"><span data-i18n="chooseImage">画像を選ぶ</span><input id="fileInput" type="file" accept="image/*"></label>
+          <button id="cameraButton" class="ghost" data-i18n="backCamera">カメラに戻す</button>
+        </div>
+        <p class="privacy"><i aria-hidden="true">●</i><span data-i18n="privacy">画像はRAM上だけで処理。保存・クラウド送信はしません。</span></p>
+      </section>
+
+      <section class="benchmark-panel panel">
+        <div class="race-head">
+          <div><span class="section-index">02</span><strong>BENCHMARK RESULTS</strong></div>
+          <div id="orderLabel">SEQUENTIAL A/B · NOT SIMULTANEOUS</div>
+        </div>
+        <div class="lanes">
+          <article class="lane cpu" data-kind="cpu">
+            <div class="lane-title"><span class="number">A</span><div><h2>CPU</h2><p>8-core Kryo</p></div><b id="cpuState">READY</b></div>
+            <div class="primary-metric"><small data-i18n="total">合計時間 · TOTAL</small><div><strong id="cpuTotal">—</strong><span data-i18n="seconds">秒</span></div></div>
+            <div class="bar-track"><div id="cpuBar" class="bar"></div></div>
+            <div class="answer-shell"><span>MODEL OUTPUT</span><div class="answer" id="cpuAnswer">実行すると、ここにCPUの応答が表示されます。</div></div>
+            <div class="metrics">
+              <div><span><i data-i18n="inputProcess">入力処理</i><em>PREFILL</em></span><p><strong id="cpuPrefill">—</strong><small data-i18n="seconds">秒</small></p></div>
+              <div><span><i data-i18n="generationSpeed">生成速度</i><em>DECODE</em></span><p><strong id="cpuTps">—</strong><small>tok/s</small></p></div>
+              <div><span><i data-i18n="firstResponse">初回応答</i><em>TTFT</em></span><p><strong id="cpuTtft">—</strong><small data-i18n="seconds">秒</small></p></div>
+            </div>
+            <code id="cpuProof">GenieX · Q4_0 · CPU only</code>
+          </article>
+          <article class="lane npu" data-kind="npu">
+            <div class="lane-title"><span class="number">B</span><div><h2>HEXAGON NPU</h2><p>V75 HTP0</p></div><b id="npuState">READY</b></div>
+            <div class="primary-metric"><small data-i18n="total">合計時間 · TOTAL</small><div><strong id="npuTotal">—</strong><span data-i18n="seconds">秒</span></div></div>
+            <div class="bar-track"><div id="npuBar" class="bar"></div></div>
+            <div class="answer-shell"><span>MODEL OUTPUT</span><div class="answer" id="npuAnswer">実行すると、ここにNPUの応答が表示されます。</div></div>
+            <div class="metrics">
+              <div><span><i data-i18n="inputProcess">入力処理</i><em>PREFILL</em></span><p><strong id="npuPrefill">—</strong><small data-i18n="seconds">秒</small></p></div>
+              <div><span><i data-i18n="generationSpeed">生成速度</i><em>DECODE</em></span><p><strong id="npuTps">—</strong><small>tok/s</small></p></div>
+              <div><span><i data-i18n="firstResponse">初回応答</i><em>TTFT</em></span><p><strong id="npuTtft">—</strong><small data-i18n="seconds">秒</small></p></div>
+            </div>
+            <code id="npuProof">GenieX · Q4_0 · HTP0 offload</code>
+          </article>
+        </div>
+        <section class="history-strip">
+          <div class="history-title"><span data-i18n="recentRuns">直近の計測</span><strong><b id="runs">0</b> <span data-i18n="runs">回</span></strong></div>
+          <div><span>CPU p50 / p95</span><strong id="cpuRolling">— / —</strong></div>
+          <div><span>NPU p50 / p95</span><strong id="npuRolling">— / —</strong></div>
+          <p class="method" data-i18n="method">同一条件 · 実行順を交互に変更</p>
+        </section>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <div class="system-bar">
+        <span>MODEL <b id="modelLabel">Qwen3-VL 2B · Q4_0</b></span><span id="boardStats">RAM — · TEMP —</span><span>INPUT <b>640×480</b></span><span>OUTPUT <b>MAX 48 TOKENS</b></span>
+      </div>
+      <p class="legal-note" data-i18n="independence">Independent community project. Not affiliated with or endorsed by Qualcomm Technologies, Inc.</p>
+    </footer>
+  </div>
+
+  <div id="toast" role="status"></div>
+  <section id="modelSwitchOverlay" class="model-switch-overlay" role="status" aria-live="assertive" hidden>
+    <div class="switch-card">
+      <div class="switch-spinner" aria-hidden="true"></div><p class="switch-kicker">MODEL SWITCH</p>
+      <h2 id="switchTitle" data-i18n="switching">モデルを切り替えています</h2><strong id="switchTarget">Qwen3-VL</strong>
+      <p id="switchMessage" data-i18n="restarting">CPU / NPUモデルサーバーを再起動しています</p>
+      <div class="switch-status"><i></i><span id="switchElapsed">経過 0秒</span></div><small data-i18n="pleaseWait">読み込み完了まで、この画面のままお待ちください</small>
+    </div>
+  </section>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+runtime/
+models/
+work/
+.venv/
+sample.jpg
+*.log
+*.pid
+__pycache__/
+.pytest_cache/
