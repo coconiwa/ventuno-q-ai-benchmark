@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="820" viewBox="0 0 1600 820" role="img" aria-labelledby="title desc">
+  <title id="title">VENTUNO Q CPU and NPU benchmark system overview</title>
+  <desc id="desc">A USB UVC camera connects directly to the VENTUNO Q. The board runs separate CPU and Hexagon NPU GenieX services and serves the benchmark interface to a browser over a local network or Tailscale. Images can also be uploaded from the browser. Inference stays on the VENTUNO Q.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#080b12"/>
+      <stop offset="1" stop-color="#101522"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4389ff"/>
+      <stop offset="0.52" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#d85a8a"/>
+    </linearGradient>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#a985ff"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#4389ff"/>
+    </marker>
+    <style>
+      .ui { font-family: Inter, Roboto, "Helvetica Neue", Arial, sans-serif; }
+      .mono { font-family: "Roboto Mono", "SFMono-Regular", Consolas, monospace; }
+      .eyebrow { fill: #a985ff; font-size: 15px; font-weight: 700; letter-spacing: 2.2px; }
+      .heading { fill: #f4f6fa; font-size: 34px; font-weight: 650; letter-spacing: -0.8px; }
+      .subheading { fill: #aab3c1; font-size: 17px; font-weight: 450; }
+      .box-title { fill: #f4f6fa; font-size: 22px; font-weight: 650; }
+      .box-copy { fill: #aab3c1; font-size: 15px; font-weight: 450; }
+      .label { fill: #778296; font-size: 13px; font-weight: 650; letter-spacing: 1.2px; }
+      .data { fill: #dce2eb; font-size: 14px; font-weight: 550; }
+      .card { fill: #10151f; stroke: #3a4659; stroke-width: 1.5; }
+      .inner { fill: #0c1119; stroke: #273141; stroke-width: 1.5; }
+      .wire { fill: none; stroke-width: 3; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="820" fill="url(#background)"/>
+  <path d="M0 74H1600M0 746H1600" stroke="#1b2330"/>
+  <path d="M0 0H580" stroke="url(#accent)" stroke-width="5"/>
+
+  <g class="ui">
+    <text x="72" y="66" class="eyebrow">SYSTEM OVERVIEW</text>
+    <text x="72" y="112" class="heading">How the benchmark connects</text>
+    <text x="72" y="143" class="subheading">The camera connects to VENTUNO Q. Inference stays on the device.</text>
+
+    <!-- Input devices -->
+    <g transform="translate(72 220)">
+      <text x="0" y="0" class="label">01 · INPUT</text>
+      <rect x="0" y="28" width="330" height="154" rx="8" class="card"/>
+      <rect x="24" y="57" width="68" height="48" rx="6" fill="#151b27" stroke="#4389ff" stroke-width="2"/>
+      <circle cx="58" cy="81" r="14" fill="none" stroke="#4389ff" stroke-width="3"/>
+      <path d="M92 68L112 60V102L92 94Z" fill="#4389ff" opacity=".9"/>
+      <text x="132" y="76" class="box-title">USB UVC camera</text>
+      <text x="132" y="104" class="box-copy">Live capture</text>
+      <path d="M24 128H306" stroke="#273141"/>
+      <text x="24" y="153" class="mono data">USB → VENTUNO Q</text>
+
+      <rect x="0" y="212" width="330" height="138" rx="8" class="card"/>
+      <path d="M27 246H67L83 262V318H27Z" fill="#151b27" stroke="#a985ff" stroke-width="2"/>
+      <path d="M67 246V262H83" fill="none" stroke="#a985ff" stroke-width="2"/>
+      <text x="108" y="267" class="box-title">Image file</text>
+      <text x="108" y="295" class="box-copy">Optional browser upload</text>
+      <text x="108" y="319" class="mono data">JPEG · PNG · WEBP</text>
+    </g>
+
+    <!-- VENTUNO Q -->
+    <g transform="translate(492 184)">
+      <rect x="0" y="0" width="616" height="480" rx="10" fill="#10151f" stroke="#8b5cf6" stroke-width="2"/>
+      <rect x="0" y="0" width="616" height="5" rx="2.5" fill="url(#accent)"/>
+      <text x="28" y="48" class="eyebrow">ON-DEVICE COMPUTE</text>
+      <text x="28" y="83" class="box-title" style="font-size:28px">VENTUNO Q</text>
+      <text x="588" y="49" text-anchor="end" class="mono data">QCS8275 · 16 GB</text>
+      <text x="588" y="78" text-anchor="end" class="box-copy">Qualcomm Dragonwing™ IQ8</text>
+
+      <rect x="28" y="110" width="560" height="68" rx="6" class="inner"/>
+      <text x="50" y="137" class="label">IMAGE PIPELINE</text>
+      <text x="50" y="160" class="data">One normalized 640 × 480 frame · same prompt · same seed</text>
+
+      <text x="28" y="216" class="label">SEQUENTIAL A/B INFERENCE</text>
+      <rect x="28" y="236" width="268" height="128" rx="7" fill="#121823" stroke="#aab3c1" stroke-width="1.5"/>
+      <rect x="50" y="258" width="36" height="36" rx="3" fill="#273141"/>
+      <text x="68" y="282" text-anchor="middle" class="mono data" style="fill:#f4f6fa">A</text>
+      <text x="102" y="277" class="box-title">CPU</text>
+      <text x="102" y="301" class="box-copy">8-core Kryo</text>
+      <text x="50" y="337" class="mono data">GenieX · compute=cpu</text>
+
+      <rect x="320" y="236" width="268" height="128" rx="7" fill="#151426" stroke="#a985ff" stroke-width="1.5"/>
+      <rect x="342" y="258" width="36" height="36" rx="3" fill="#34265c"/>
+      <text x="360" y="282" text-anchor="middle" class="mono data" style="fill:#f4f6fa">B</text>
+      <text x="394" y="277" class="box-title">HEXAGON NPU</text>
+      <text x="394" y="301" class="box-copy">V75 HTP0</text>
+      <text x="342" y="337" class="mono data">GenieX · compute=npu</text>
+
+      <path d="M296 300H320" stroke="#a985ff" stroke-width="3" marker-end="url(#arrow-purple)"/>
+      <text x="308" y="289" text-anchor="middle" class="mono" fill="#778296" font-size="11">A/B</text>
+
+      <rect x="28" y="392" width="560" height="60" rx="6" fill="#131a24" stroke="#35d0a0" stroke-width="1.5"/>
+      <text x="50" y="418" class="label" style="fill:#35d0a0">LOCAL WEB APP · PORT 8096</text>
+      <text x="50" y="439" class="box-copy">Controls, live output, latency, TTFT, prefill and decode</text>
+    </g>
+
+    <!-- Browser -->
+    <g transform="translate(1198 258)">
+      <text x="0" y="0" class="label">02 · VIEW &amp; CONTROL</text>
+      <rect x="0" y="28" width="330" height="244" rx="8" class="card"/>
+      <rect x="24" y="55" width="282" height="158" rx="6" fill="#080b12" stroke="#4389ff" stroke-width="2"/>
+      <path d="M24 84H306" stroke="#273141" stroke-width="2"/>
+      <circle cx="42" cy="69" r="4" fill="#ff6b78"/>
+      <circle cx="56" cy="69" r="4" fill="#f0a83a"/>
+      <circle cx="70" cy="69" r="4" fill="#35d0a0"/>
+      <rect x="46" y="107" width="104" height="80" rx="3" fill="#151b27" stroke="#3a4659"/>
+      <rect x="164" y="107" width="54" height="80" rx="3" fill="#151b27" stroke="#aab3c1"/>
+      <rect x="230" y="107" width="54" height="80" rx="3" fill="#19162b" stroke="#a985ff"/>
+      <text x="165" y="242" text-anchor="middle" class="box-title">PC or tablet</text>
+      <text x="165" y="264" text-anchor="middle" class="box-copy">Any modern browser</text>
+    </g>
+
+    <!-- Connections -->
+    <path d="M402 325H492" class="wire" stroke="#4389ff" marker-end="url(#arrow-blue)"/>
+    <text x="447" y="310" text-anchor="middle" class="mono label" style="fill:#4389ff">USB</text>
+
+    <path d="M1108 535H1170Q1182 535 1182 523V430Q1182 418 1198 418" class="wire" stroke="#a985ff" marker-end="url(#arrow-purple)"/>
+    <text x="1150" y="557" text-anchor="middle" class="mono label" style="fill:#a985ff">RESULTS</text>
+
+    <path d="M1198 462H1164Q1148 462 1148 478V594Q1148 610 1132 610H1108" class="wire" stroke="#4389ff" marker-end="url(#arrow-blue)"/>
+    <text x="1154" y="632" text-anchor="middle" class="mono label" style="fill:#4389ff">CONTROL / UPLOAD</text>
+
+    <rect x="1166" y="340" width="394" height="44" rx="22" fill="#151b27" stroke="#3a4659"/>
+    <text x="1363" y="367" text-anchor="middle" class="mono data">LAN · WI-FI · OPTIONAL TAILSCALE</text>
+
+    <path d="M402 501H438Q454 501 454 517V594Q454 610 470 610H492" class="wire" stroke="#a985ff" stroke-dasharray="7 7" marker-end="url(#arrow-purple)"/>
+    <text x="421" y="544" text-anchor="middle" class="mono label" transform="rotate(-90 421 544)" style="fill:#a985ff">VIA BROWSER</text>
+
+    <!-- Privacy strip -->
+    <g transform="translate(72 706)">
+      <rect x="0" y="0" width="1456" height="62" rx="6" fill="#0e1718" stroke="#28584c"/>
+      <circle cx="32" cy="31" r="7" fill="#35d0a0"/>
+      <text x="55" y="27" class="label" style="fill:#35d0a0">LOCAL BY DESIGN</text>
+      <text x="55" y="47" class="box-copy">Images are processed in RAM on VENTUNO Q — nothing is saved or sent to a cloud service.</text>
+      <text x="1424" y="37" text-anchor="end" class="mono label">CPU / NPU BENCHMARK</text>
+    </g>
+  </g>
+</svg>
